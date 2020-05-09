@@ -351,3 +351,129 @@ public T update(int index,T t) {
     return item;
 }
 ```
+
+### 三HashSet（线程不安全）（元素无序，不可重复）
+
+##### 1.hashset的父类
+
+```java
+public class HashSet<E>
+    extends AbstractSet<E>
+    implements Set<E>, Cloneable, java.io.Serializable
+```
+
+##### 2.构造函数（内部实例化了一个map）
+
+```java
+private transient HashMap<E,Object> map;
+public HashSet() {
+    map = new HashMap<>();
+}
+//set集合的大小，即内部hashMap的大小
+public int size() {
+        return map.size();
+    }
+默认大小16
+default initial capacity (16) and load factor (0.75).
+```
+
+##### 3.加载因子
+
+加载因子是表示Hsah表中元素的填满的程度.若:加载因子越大,填满的元素越多,好处是,空间利用率高了,但:冲突的机会加大了.反之,加载因子越小,填满的元素越少,好处是:冲突的机会减小了,但:空间浪费多了.
+
+冲突的机会越大,则查找的成本越高.反之,查找的成本越小.因而,查找时间就越小.
+
+因此,必须在 "冲突的机会"与"空间利用率"之间寻找一种平衡与折衷. 这种平衡与折衷本质上是数据结构中有名的"时-空"矛盾的平衡与折衷.
+
+##### 4.阈值=加载因子*容量
+
+存储的元素达到这个临界值机会扩容
+
+##### 5.遍历
+
+![image-20200509104001451](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200509104001451.png)
+
+```java
+Iterator iterator = set.iterator();
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+```
+
+![image-20200509104313569](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200509104313569.png)
+
+##### HashSet具体用法（排重）
+
+没有重写对象的equals和hashcode方法，两个对象肯定不等
+
+```java
+Set<User> set = new HashSet<>();
+
+User user1 = new User(10,"张三");
+User user2 = new User(10, "张三");
+
+System.out.println(user1.equals(user2));//false
+System.out.println(set.add(user1));//true
+System.out.println(set.add(user2));//true
+
+set.forEach(user->System.out.println(user));
+```
+
+```java
+重写hashcode和equals进行排重，obj表示要插入的对象
+@Override
+public int hashCode() {
+    return age+name.hashCode();
+}
+
+@Override
+public boolean equals(Object obj) {
+    User user = (User) obj;
+    return this.name == user.name && this.age == user.age;
+}
+```
+
+### 四;TreeSet(线程不安全)
+
+##### 方式一自然排序：treeSet里面的元素必须实现Comparable接口，不然报错
+
+```java
+public class User implements Comparable 
+@Override
+    public int compareTo(Object o) {
+        User user = (User)o;
+    //升序降序，返回0一样大不会添加数据，返回1大于，返回-1小于
+        return user.age-this.age;
+    }
+```
+
+##### 方式二：定制排序
+
+**定制排序**。上面例子通过修改user类中的CompareTo方法就可以实现不同的排序方法。如果在特定情况下，不能够修改user类的代码，就需要用到定制排序
+
+```java
+//创建comparator接口的实例
+Comparator comparator = new Comparator() {
+    @Override
+    public int compare(Object o1, Object o2) {
+        if(o1 instanceof User && o2 instanceof User) {
+            User user1 = (User) o1;
+            User user2 = (User) o2;
+            return user1.age-user2.age;
+        }
+        return 0;
+    }
+};
+//将实例传给set构造函数
+Set set = new TreeSet(comparator);
+User user1 = new User(9, "李四");
+User user2 = new User(10, "李四");
+User user3 = new User(11, "李四");
+User user4 = new User(11, "李四");
+
+treeset构造函数
+public TreeSet(Comparator<? super E> comparator) {
+        this(new TreeMap<>(comparator));
+    }
+```
+
