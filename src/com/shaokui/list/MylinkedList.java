@@ -78,13 +78,16 @@ public class MylinkedList<T> {
         }
     }
     Node<T> findByIndex(int index) {
+        System.out.println("二分法");
         Node<T> temp;
         if(index < (size >> 1)) {
+            System.out.println("靠左");
             temp = first;
             for(int i = 0; i < index; i++) {
                 temp = temp.next;
             }
         }else {
+            System.out.println("靠右");
             temp = last;
             for(int i = size-1; i > index; i--) {
                 temp = temp.prev;

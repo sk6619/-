@@ -1,6 +1,7 @@
 package com.shaokui.list;
 
 import java.lang.annotation.ElementType;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Arrays;
  * @Date 2020/5/7 0007 下午 12:45
  * @Version 1.0
  */
+
 public class MyArraylist<T> {
 
     private int DEFAULT_CAPACITY = 10;//第一次添加数据后默认容量
@@ -23,10 +25,14 @@ public class MyArraylist<T> {
     public MyArraylist() {
         this.elementData = DEFAULT_EMPTY_ELEMENT;
     }
+    //添加一个数据
     public boolean add(T t) {
+        //判断添加之前数组是不是空数组
         if(elementData == DEFAULT_EMPTY_ELEMENT) {
+            //如果是，将数组长度设为默认长度10
             elementData = new Object[DEFAULT_CAPACITY];
         }
+        //如果添加数据之后集合长度大于数组长度，扩容
         if(size+1 > elementData.length) {
             DEFAULT_CAPACITY = DEFAULT_CAPACITY+(DEFAULT_CAPACITY>>1);
             Object[] newArray = new Object[DEFAULT_CAPACITY];
