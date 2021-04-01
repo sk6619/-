@@ -35,19 +35,26 @@ public class TestLinkedList {
         t1.start();
         t2.start();
         list.forEach(temp-> System.out.println(temp));*/
-        MylinkedList<Integer> list = new MylinkedList<>();
+        /*MylinkedList<Integer> list = new MylinkedList<>();
         for(int i = 0;i<100;i++) {
             list.add(i);
         }
         System.out.println(list.get(98));
         System.out.println("修改前值为："+list.update(98, 1111));
-        System.out.println("修改后的值为："+list.get(98));
+        System.out.println("修改后的值为："+list.get(98));*/
         /*System.out.println(list.get(99));*/
 
         //测试移除
         /*list.remove(0);
         System.out.println(list.size);
         System.out.println(list.get(0));*/
+
+        MylinkedList<Integer> list = new MylinkedList<Integer>();
+
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
+        }
+        System.out.println(list.size+";"+list.get(9));
 
     }
 
