@@ -1,10 +1,8 @@
-package com.shaokui.reflex;
+package com.shaokui.reflect;
 
 import org.junit.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -64,5 +62,27 @@ public class TestPeople {
                System.out.println(annotation);
            }
         }
+    }
+
+    //反射是否改变类的私有属性
+    @Test
+    public void testPrivate() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Field[] fields = People.class.getDeclaredFields();
+        Class clazz = Class.forName("com.shaokui.reflect.People");
+        People people = (People) clazz.newInstance();
+        /*for(Field filed:fields) {
+            //获取不到私有属性
+            System.out.println(filed);
+            filed.set(people,"0000");
+        }*/
+        fields[0].set(people, "张三");
+        System.out.println(people.getName());
+        fields[1].set(people, "nan");
+        System.out.println(people.getGender());
+        //反射不能修改私有属性,除非
+        fields[2].setAccessible(true);//压制java检查机制
+        fields[2].set(people, 5);
+        System.out.println(people.getAge());
+
     }
 }

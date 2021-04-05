@@ -1,4 +1,4 @@
-package com.shaokui.reflex;
+package com.shaokui.reflect;
 
 import org.junit.Test;
 
